@@ -41,16 +41,6 @@ def merge_tables(filenames):
         return df[master_columns]
     
     standardized_dfs = [match_columns(df, master_columns) for df in dfs]
-    '''
-    merged_df = pd.concat(standardized_dfs,
-                          ignore_index=True
-                         )
-  
-    merged_list = []
-    
-    df_row_list = [ merged_list.extend(x.to_dict()) for x in standardized_dfs]
-    merged_df = pd.DataFrame(merged_list)
-    '''
     merged_df = pd.concat(standardized_dfs,
                       ignore_index=True,
                      )
@@ -58,6 +48,7 @@ def merge_tables(filenames):
     sorted_df.insert(0, sorted_df.pop(sorted_df.index('Unnamed: 0')))
     merged_df = merged_df.loc[:, sorted_df]
     merged_df['Unnamed: 0'] = [x.strip() for x in merged_df['Unnamed: 0']]  
+    
     first_col = merged_df.columns[0]
     sorted_cols = sorted(merged_df.columns[1:])
     merged_df = merged_df[[first_col] + sorted_cols]
