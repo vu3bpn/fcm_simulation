@@ -1,5 +1,6 @@
 import pandas as pd
 import os
+import numpy as np
 
 def get_initial_simulation_values(output_dir,
                                   transform_mat,
@@ -45,15 +46,15 @@ def mc_simulation(transform_mat,
     outputs = []
     inputs  = []
     for idx in range(random_samples):
-        input_df  = pandas.DataFrame([list(random_inputs[idx])],columns=merged_table.columns)
+        input_df  = pd.DataFrame([list(random_inputs[idx])],columns=transform_mat.columns)
         output_df = single_step(input_df,
                                 transform_mat,
                                 decimation
                    )
         outputs.append(output_df)
         inputs.append(input_df)
-    outputs_df = pandas.concat(outputs,axis=0,ignore_index=True)
-    inputs_df = pandas.concat(inputs,axis=0,ignore_index=True)     
+    outputs_df = pd.concat(outputs,axis=0,ignore_index=True)
+    inputs_df = pd.concat(inputs,axis=0,ignore_index=True)     
     joined_df = inputs_df.join(outputs_df,lsuffix = " input", rsuffix=' output')
     return joined_df
 
